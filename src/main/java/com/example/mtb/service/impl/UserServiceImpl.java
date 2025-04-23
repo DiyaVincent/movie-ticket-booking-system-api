@@ -1,6 +1,7 @@
 package com.example.mtb.service.impl;
 
 import com.example.mtb.dto.UserRegistrationDTO;
+import com.example.mtb.dto.UserResponse;
 import com.example.mtb.entity.UserDetails;
 import com.example.mtb.exceptions.UserExistByEmailException;
 import com.example.mtb.mapper.UserDetailsMapper;
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDetails addUser(UserRegistrationDTO dto) {
+    public UserDetails addUser(UserResponse dto) {
         if (userRepository.existsByEmail(dto.email())) {
             throw new UserExistByEmailException("User with email already exists");
         }

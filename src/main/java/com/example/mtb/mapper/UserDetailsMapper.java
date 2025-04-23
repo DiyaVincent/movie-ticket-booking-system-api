@@ -1,6 +1,7 @@
 package com.example.mtb.mapper;
 
 import com.example.mtb.dto.UserRegistrationDTO;
+import com.example.mtb.dto.UserResponse;
 import com.example.mtb.entity.TheaterOwner;
 import com.example.mtb.entity.User;
 import com.example.mtb.entity.UserDetails;
@@ -27,7 +28,7 @@ import java.time.Instant;
 public class UserDetailsMapper {
         private UserDetailsMapper() {} // Utility class
 
-    public static UserDetails mapFromDTO(UserRegistrationDTO dto) {
+    public static UserDetails mapFromDTO(UserResponse dto) {
         UserDetails user = switch (dto.userRole()) {
             case USER -> new User();
             case THEATER_OWNER -> new TheaterOwner();
@@ -35,7 +36,6 @@ public class UserDetailsMapper {
 
         user.setUsername(dto.username());
         user.setEmail(dto.email());
-        user.setPassword(dto.password()); // Hash later
         user.setPhoneNumber(dto.phoneNumber());
         user.setUserRole(dto.userRole());
         user.setDateOfBirth(dto.dateOfBirth());
