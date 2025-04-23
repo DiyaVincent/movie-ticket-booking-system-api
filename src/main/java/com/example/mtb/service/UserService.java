@@ -1,8 +1,11 @@
 package com.example.mtb.service;
 
+import com.example.mtb.dto.UserRegistrationDTO;
 import com.example.mtb.entity.UserDetails;
 
 public interface UserService {
 
-    public UserDetails addUser(UserDetails user);
+//    UserRegistrationDTO addUser(UserRegistrationRequest user);
+
+    UserDetails addUser(UserRegistrationDTO dto);
 }
