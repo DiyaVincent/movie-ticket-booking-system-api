@@ -31,6 +31,9 @@ public class UserDetails {
     private UserRole userRole;
     private LocalDate dateOfBirth;
 
+    private boolean isDelete;
+    private Instant deletedAt;
+
     @CreatedDate
     private Instant createdAt;
     @LastModifiedDate

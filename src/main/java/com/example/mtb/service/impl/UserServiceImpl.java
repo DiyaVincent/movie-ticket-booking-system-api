@@ -15,6 +15,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 import static com.example.mtb.enums.UserRole.THEATER_OWNER;
 import static com.example.mtb.enums.UserRole.USER;
 
@@ -76,6 +78,18 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(userRole);
         return userRole;
+    }
+
+    @Override
+    public UserResponse softDeleteUser(String email) {
+        if (userRepository.existsByEmail(email)) {
+            UserDetails user = userRepository.findByEmail(email);
+            user.setDelete(true);
+            user.setDeletedAt(Instant.now());
+            userRepository.save(user);
+            return userMapper.userDetailsResponseMapper(user);
+        }
+        throw new UserNotFoundByEmailException("Email not found in the Database");
     }
 }
 
