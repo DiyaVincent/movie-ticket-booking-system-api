@@ -69,13 +69,17 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserDetails copy(UserDetails userRole, UserUpdationRequest user) {
-        userRole.setUsername(user.username());
-//        userRole.setEmail(user.email());
-        userRole.setPhoneNumber(user.phoneNumber());
+//        userRole.setUsername(user.username());
+////        userRole.setEmail(user.email());
+//        userRole.setPhoneNumber(user.phoneNumber());
+//        userRole.setDateOfBirth(user.dateOfBirth());
+//        userRepository.save(userRole);
+//        return userRole;
         userRole.setDateOfBirth(user.dateOfBirth());
-
-
-
+        userRole.setPhoneNumber(user.phoneNumber());
+        userRole.setEmail(user.email());
+        userRole.setUsername(user.username());
+        userRole.setDelete(false);
         userRepository.save(userRole);
         return userRole;
     }
