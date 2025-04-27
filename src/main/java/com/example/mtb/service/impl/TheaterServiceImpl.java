@@ -6,6 +6,7 @@ import com.example.mtb.entity.Theater;
 import com.example.mtb.entity.TheaterOwner;
 import com.example.mtb.entity.UserDetails;
 import com.example.mtb.enums.UserRole;
+import com.example.mtb.exceptions.TheaterNotFoundByIdException;
 import com.example.mtb.exceptions.UserNotFoundByEmailException;
 import com.example.mtb.mapper.TheaterMapper;
 import com.example.mtb.repository.TheaterRepository;
@@ -42,5 +43,14 @@ public class TheaterServiceImpl implements TheaterService {
         theater.setTheaterOwner((TheaterOwner) userDetails);
         theaterRepository.save(theater);
         return theater;
+    }
+
+    @Override
+    public TheaterResponse findTheater(String theaterId) {
+        if(theaterRepository.existsById(theaterId)){
+            Theater theater = theaterRepository.findById(theaterId).get();
+            return theaterMapper.theaterResponseMapper(theater);
+        }
+        throw new TheaterNotFoundByIdException("Theater not found by the id");
     }
 }

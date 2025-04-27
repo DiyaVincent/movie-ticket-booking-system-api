@@ -25,4 +25,9 @@ public class TheaterController {
         return responseBuilder.success(HttpStatus.OK, "Theater has been succesfull created", theaterResponse);
     }
 
+    @GetMapping("theaters/{theaterId}")
+    public ResponseEntity<ResponseStructure<TheaterResponse>> findTheater(@PathVariable String theaterId){
+        TheaterResponse theaterResponse = theaterService.findTheater(theaterId);
+        return responseBuilder.success(HttpStatus.OK, "Theater has been sucessfully fetched", theaterResponse);
+    }
 }
