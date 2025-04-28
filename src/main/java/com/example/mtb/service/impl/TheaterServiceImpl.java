@@ -1,6 +1,6 @@
 package com.example.mtb.service.impl;
 
-import com.example.mtb.dto.TheaterRegisterationRequest;
+import com.example.mtb.dto.TheaterRequest;
 import com.example.mtb.dto.TheaterResponse;
 import com.example.mtb.entity.Theater;
 import com.example.mtb.entity.TheaterOwner;
@@ -12,7 +12,6 @@ import com.example.mtb.mapper.TheaterMapper;
 import com.example.mtb.repository.TheaterRepository;
 import com.example.mtb.repository.UserRepository;
 import com.example.mtb.service.TheaterService;
-import com.example.mtb.util.RestResponseBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class TheaterServiceImpl implements TheaterService {
     private final UserRepository userRepository;
 
     @Override
-    public TheaterResponse addTheater(String email, TheaterRegisterationRequest theaterRegisterationRequest) {
+    public TheaterResponse addTheater(String email, TheaterRequest theaterRegisterationRequest) {
 
         if(userRepository.existsByEmail(email) && userRepository.findByEmail(email).getUserRole() == UserRole.THEATER_OWNER ){
             UserDetails user = userRepository.findByEmail(email);
@@ -35,7 +34,7 @@ public class TheaterServiceImpl implements TheaterService {
         throw new UserNotFoundByEmailException("No Theater Owner with the provided email is present");
     }
 
-    private Theater copy(TheaterRegisterationRequest registerationRequest, Theater theater , UserDetails userDetails){
+    private Theater copy(TheaterRequest registerationRequest, Theater theater , UserDetails userDetails){
         theater.setAddress(registerationRequest.address());
         theater.setCity(registerationRequest.city());
         theater.setName(registerationRequest.name());
@@ -52,5 +51,24 @@ public class TheaterServiceImpl implements TheaterService {
             return theaterMapper.theaterResponseMapper(theater);
         }
         throw new TheaterNotFoundByIdException("Theater not found by the id");
+    }
+
+    @Override
+    public TheaterResponse updateTheater(String theaterId, TheaterRequest registerationRequest) {
+        if(theaterRepository.existsById(theaterId)) {
+            Theater theater = theaterRepository.findById(theaterId).get();
+            theater = copy(registerationRequest, theater);
+            return theaterMapper.theaterResponseMapper(theater);
+        }
+        throw new TheaterNotFoundByIdException("Theater not found by id");
+    }
+
+    private Theater copy(TheaterRequest registerationRequest, Theater theater) {
+        theater.setAddress(registerationRequest.address());
+        theater.setCity(registerationRequest.city());
+        theater.setName(registerationRequest.name());
+        theater.setLandmark(registerationRequest.landmark());
+        theaterRepository.save(theater);
+        return theater;
     }
 }
