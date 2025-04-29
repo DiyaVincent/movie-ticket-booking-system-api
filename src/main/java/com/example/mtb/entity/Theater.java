@@ -1,42 +1,39 @@
 package com.example.mtb.entity;
 
-import com.example.mtb.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
-@Inheritance(strategy =InheritanceType.JOINED)
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Setter
 @Getter
 @ToString
-@EntityListeners(AuditingEntityListener.class)
-public class UserDetails {
+public class Theater {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String userId;
-    private String username;
-    @Column(unique = true)
-    private String email;
-    private String password;
-    private String phoneNumber;
-    @Enumerated(value = EnumType.STRING)
-    private UserRole userRole;
-    private LocalDate dateOfBirth;
+    private String theaterId;
+    private String name;
+    private String address;
+    private String city;
+    private String landmark;
 
-    private boolean isDelete;
-    private Instant deletedAt;
+    @ManyToOne
+    private TheaterOwner theaterOwner;
 
     @CreatedDate
     private Instant createdAt;
     @LastModifiedDate
     private Instant updatedAt;
+    private String createdBy;
+
 
 }
